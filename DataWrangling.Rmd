@@ -1,0 +1,21 @@
+---
+title: 'Data Wrangling'
+author: "Muhammad Ahsan Tahir"
+date: ""
+output: pdf_document
+---
+
+```{r}
+library(RSQLite)
+library(tidyverse)
+```
+```{r}
+con <- dbConnect(SQLite(), dbname = "england.db")
+tables <- dbListTables(con)
+tables
+
+result <- dbGetQuery(con, "SELECT * FROM teams")
+result
+```
+
+
