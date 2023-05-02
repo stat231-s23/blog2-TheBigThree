@@ -44,8 +44,24 @@ processedMatchesTable <- filteredMatchesTable %>%
          team2 = pmax(team1_id, team2_id),
          adjustedWinner = ifelse(winner == 0, 0, ifelse(team1_id == team1, winner, 3 - winner)),
          adjustedScore1 = ifelse(team1_id == team1, score1, score2),
-         adjustedScore2 = ifelse(team1_id == team1, score2, score1)) %>%
-  select(team1, team2, adjustedWinner, adjustedScore1, adjustedScore2, date)
+         adjustedScore2 = ifelse(team1_id == team1, score2, score1),
+         team1Won = ifelse(adjustedWinner == 1, 1, 0),
+         team2Won = ifelse(adjustedWinner == 2, 1, 0),
+         goalDifference = adjustedScore1 - adjustedScore2) %>%
+  select(team1, team2, team1Won, team2Won, goalDifference, adjustedScore1, adjustedScore2, date)
+
+
+matchesSummary <- processedMatchesTable %>%
+  group_by(team1, team2) %>%
+  summarize(winDifference = sum(team1Won) - sum(team2Won),
+            team1Wins = sum(team1Won),
+            team2Wins = sum(team2Won),
+            totalGoalDifference = sum(goalDifference),
+            team1Goals = sum(adjustedScore1),
+            team2Goals = sum(adjustedScore2)
+            )
+
+matchesSummary
 
 processedMatchesTable
 
