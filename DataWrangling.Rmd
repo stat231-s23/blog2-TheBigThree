@@ -36,9 +36,18 @@ teamsTable <- dbGetQuery(con, "SELECT * FROM teams")%>%
 ```
 ```{r}
 filteredMatchesTable <- matchesTable %>%
-  select(team1_id, team2_id, winner, score1, score2, date)
+  select(team1_id, team2_id, winner, score1, score2, date) %>%
+  na.omit()
 
-filteredMatchesTable
+processedMatchesTable <- filteredMatchesTable %>%
+  mutate(team1 = pmin(team1_id, team2_id),
+         team2 = pmax(team1_id, team2_id),
+         adjustedWinner = ifelse(winner == 0, 0, ifelse(team1_id == team1, winner, 3 - winner)),
+         adjustedScore1 = ifelse(team1_id == team1, score1, score2),
+         adjustedScore2 = ifelse(team1_id == team1, score2, score1)) %>%
+  select(team1, team2, adjustedWinner, adjustedScore1, adjustedScore2, date)
+
+processedMatchesTable
 
 ```
 
