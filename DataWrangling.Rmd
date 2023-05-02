@@ -9,13 +9,24 @@ output: pdf_document
 library(RSQLite)
 library(tidyverse)
 ```
+
+
+
 ```{r}
 con <- dbConnect(SQLite(), dbname = "england.db")
 tables <- dbListTables(con)
 tables
 
-result <- dbGetQuery(con, "SELECT * FROM teams")
+result <- dbGetQuery(con, "SELECT * FROM matches")
 result
+```
+
+```{r}
+
+
+matchesTable <- dbGetQuery(con, "SELECT * FROM matches")%>%
+  collect()
+matchesTable
 ```
 
 
