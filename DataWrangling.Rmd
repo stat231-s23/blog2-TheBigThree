@@ -22,11 +22,25 @@ result
 ```
 
 ```{r}
-
-
 matchesTable <- dbGetQuery(con, "SELECT * FROM matches")%>%
   collect()
 matchesTable
 ```
+
+```{r}
+teamsTable <- dbGetQuery(con, "SELECT * FROM teams")%>%
+  collect()
+
+
+
+```
+```{r}
+filteredMatchesTable <- matchesTable %>%
+  select(team1_id, team2_id, winner, score1, score2, date)
+
+filteredMatchesTable
+
+```
+
 
 
