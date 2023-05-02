@@ -31,8 +31,6 @@ matchesTable
 teamsTable <- dbGetQuery(con, "SELECT * FROM teams")%>%
   collect()
 
-
-
 ```
 ```{r}
 filteredMatchesTable <- matchesTable %>%
@@ -59,7 +57,8 @@ matchesSummary <- processedMatchesTable %>%
             totalGoalDifference = sum(goalDifference),
             team1Goals = sum(adjustedScore1),
             team2Goals = sum(adjustedScore2)
-            )
+            ) %>%
+  ungroup()
 
 matchesSummary
 
@@ -67,5 +66,23 @@ processedMatchesTable
 
 ```
 
+```{r}
+teams1Table <- teamsTable %>%
+  mutate(name1 = name,
+         team1 = id) %>%
+  select(team1, name1)
 
+tableWithTeam1Names <- inner_join(matchesSummary, teams1Table, by = "team1")
+
+teams2Table <- teamsTable %>%
+  mutate(name2 = name,
+         team2 = id) %>%
+  select(team2, name2)
+
+finalTable <- inner_join(tableWithTeam1Names, teams2Table, by = "team2") %>%
+  select(name1, name2, winDifference, totalGoalDifference)
+
+finalTable
+
+```
 
