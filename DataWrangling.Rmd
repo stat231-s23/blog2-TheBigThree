@@ -105,7 +105,7 @@ solo <- graph_from_data_frame(finalTablesolo, directed = FALSE)
   # ggnetwork() %>%
   # ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
   geom_edge_link(aes(width = abs(totalGoalDifference), color = Goals),
-             arrow = arrow(type = "closed", length = unit(8, "pt"))) +
+             arrow = arrow(type = "closed", length = unit(10, "pt"))) +
   scale_edge_width(name = "Goal Difference", range = c(0.5, 5), guide = guide_legend(title.position = "top", title.hjust = 0.5)) +
   scale_color_manual(name = "", values = c("Positive Goal Difference" = "green", "Negative Goal Difference" = "red")) +
   geom_node_point() +
