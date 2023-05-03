@@ -8,6 +8,11 @@ output: pdf_document
 ```{r}
 library(RSQLite)
 library(tidyverse)
+library(igraph)
+library(ggraph)
+library(dplyr)
+library(ggnetwork)
+library(tidygraph)
 ```
 
 
@@ -82,7 +87,30 @@ teams2Table <- teamsTable %>%
 finalTable <- inner_join(tableWithTeam1Names, teams2Table, by = "team2") %>%
   select(name1, name2, winDifference, totalGoalDifference)
 
+finalTablesolo <- finalTable %>% 
+  filter(name1 == "Burnley FC") %>%
+  mutate(Goals = ifelse(winDifference >= 0, "Positive Goal Difference", "Negative Goal Difference"))
+
+finalTablesolo
 finalTable
 
 ```
 
+
+```{r}
+
+set.seed(123)
+solo <- graph_from_data_frame(finalTablesolo, directed = FALSE)
+  ggraph(solo, layout = "fr") +
+  # ggnetwork() %>%
+  # ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_edge_link(aes(width = abs(totalGoalDifference), color = Goals),
+             arrow = arrow(type = "closed", length = unit(8, "pt"))) +
+  scale_edge_width(name = "Goal Difference", range = c(0.5, 5), guide = guide_legend(title.position = "top", title.hjust = 0.5)) +
+  scale_color_manual(name = "", values = c("Positive Goal Difference" = "green", "Negative Goal Difference" = "red")) +
+  geom_node_point() +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void()
+
+
+```
