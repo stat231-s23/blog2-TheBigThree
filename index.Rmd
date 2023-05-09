@@ -22,7 +22,7 @@ library(tidyverse)
 
 # Intro
 
-This is an R Markdown blog template. This document will be knit to HTML to produce a webpage that will be hosted publicly via GitHub.
+This is an R Markdown blog template sklfjsdkljflsjflasdklj. This document will be knit to HTML to produce a webpage that will be hosted publicly via GitHub.
 
 ## Website publication work flow
 
