@@ -1,6 +1,6 @@
 ---
 title: "Your Project Title Here"
-author: "Lau, Ahsan, Michael"
+author: "Lau, Ahsan, Michael Perales" 
 date: "04/13/2023"
 output:
   rmdformats::readthedown:
