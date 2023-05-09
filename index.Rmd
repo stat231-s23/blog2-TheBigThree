@@ -34,14 +34,14 @@ This is an R Markdown blog template sklfjsdkljflsjflasdklj. This document will b
 
 #Shiny app 1
 
-```{r ds-salaries-app, out.width = "100%", out.extra = 'data-external="1" frameborder="no"', fig.cap = "[Data Science Salaries Shiny App](https://michaelp.shinyapps.io/table/)"}
+```{r table-app, out.width = "100%", out.extra = 'data-external="1" frameborder="no"', fig.cap = "[Data Science Salaries Shiny App](https://michaelp.shinyapps.io/table/)"}
 knitr::include_app("https://michaelp.shinyapps.io/table/",
                    height = "500px")
 ```
 
 #Shiny app 2
 
-```{r ds-salaries-app, out.width = "100%", out.extra = 'data-external="1" frameborder="no"', fig.cap = "[Data Science Salaries Shiny App](https://michaelp.shinyapps.io/networkGraph/)"}
+```{r network-app, out.width = "100%", out.extra = 'data-external="1" frameborder="no"', fig.cap = "[Data Science Salaries Shiny App](https://michaelp.shinyapps.io/networkGraph/)"}
 knitr::include_app("https://michaelp.shinyapps.io/networkGraph/",
                    height = "500px")
 ```
