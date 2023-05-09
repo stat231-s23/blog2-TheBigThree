@@ -18,30 +18,51 @@ library(tidygraph)
 
 
 ```{r}
+# Connect to the SQLite database named "england.db"
 con <- dbConnect(SQLite(), dbname = "england.db")
+
+# List all the tables in the connected database
 tables <- dbListTables(con)
+
+# Print out the names of all tables in the database
 tables
 
+# Execute a SQL query to select all records from the "matches" table
+# and store the results in the 'result' dataframe
 result <- dbGetQuery(con, "SELECT * FROM matches")
+
+# Print out the 'result' dataframe that contains all records from the "matches" table
 result
+
 ```
 
 ```{r}
-matchesTable <- dbGetQuery(con, "SELECT * FROM matches")%>%
+# Execute a SQL query to select all records from the "matches" table,
+# then pipeline (%>%) the data to the 'collect' function to evaluate the query and fetch the data
+# The fetched data is stored in the 'matchesTable' dataframe
+matchesTable <- dbGetQuery(con, "SELECT * FROM matches") %>%
   collect()
+
+# Print out the 'matchesTable' dataframe that contains all data from the "matches" table
 matchesTable
+
 ```
 
 ```{r}
-teamsTable <- dbGetQuery(con, "SELECT * FROM teams")%>%
+# Execute a SQL query to select all records from the "teams" table,
+# then pipeline (%>%) the data to the 'collect' function to evaluate the query and fetch the data
+# The fetched data is stored in the 'teamsTable' dataframe
+teamsTable <- dbGetQuery(con, "SELECT * FROM teams") %>%
   collect()
 
-```
-```{r}
+# Create a filtered version of matchesTable, selecting only specific columns
+# Remove any rows with NA values using na.omit()
 filteredMatchesTable <- matchesTable %>%
   select(team1_id, team2_id, winner, score1, score2, date) %>%
   na.omit()
 
+# Process the filtered matches table by adding and modifying columns
+# The operations include re-ordering teams by ID, adjusting winner and score variables, and calculating goal difference
 processedMatchesTable <- filteredMatchesTable %>%
   mutate(team1 = pmin(team1_id, team2_id),
          team2 = pmax(team1_id, team2_id),
@@ -53,7 +74,8 @@ processedMatchesTable <- filteredMatchesTable %>%
          goalDifference = adjustedScore1 - adjustedScore2) %>%
   select(team1, team2, team1Won, team2Won, goalDifference, adjustedScore1, adjustedScore2, date)
 
-
+# Summarize the processed matches table by grouping by teams and calculating various statistics
+# This includes win difference, total wins, total goal difference, and total goals for each team
 matchesSummary <- processedMatchesTable %>%
   group_by(team1, team2) %>%
   summarize(winDifference = sum(team1Won) - sum(team2Won),
@@ -65,46 +87,70 @@ matchesSummary <- processedMatchesTable %>%
             ) %>%
   ungroup()
 
+# Print out the 'matchesSummary' dataframe that contains the summarised statistics for each pair of teams
 matchesSummary
 
+# Print out the 'processedMatchesTable' dataframe that contains all processed records from the "matches" table
 processedMatchesTable
+
 
 ```
 
 ```{r}
+# Create a new table 'teams1Table' from 'teamsTable' by adding a new column 'name1' which is same as 'name',
+# and 'team1' which is same as 'id', then select only 'team1' and 'name1'
 teams1Table <- teamsTable %>%
   mutate(name1 = name,
          team1 = id) %>%
   select(team1, name1)
 
+# Perform an inner join on 'matchesSummary' and 'teams1Table' on the column 'team1' and store the result in 'tableWithTeam1Names'
 tableWithTeam1Names <- inner_join(matchesSummary, teams1Table, by = "team1")
 
+# Create a new table 'teams2Table' from 'teamsTable' by adding a new column 'name2' which is same as 'name',
+# and 'team2' which is same as 'id', then select only 'team2' and 'name2'
 teams2Table <- teamsTable %>%
   mutate(name2 = name,
          team2 = id) %>%
   select(team2, name2)
 
+# Perform an inner join on 'tableWithTeam1Names' and 'teams2Table' on the column 'team2' and store the result in 'finalTable'
+# Then select only a few columns and add a new column 'Goals' based on the value of 'winDifference'
 finalTable <- inner_join(tableWithTeam1Names, teams2Table, by = "team2") %>%
   select(name1, name2, winDifference, totalGoalDifference)%>%
   mutate(Goals = ifelse(winDifference >= 0, "Positive Goal Difference", "Negative Goal Difference"))
 
+# Create a new table 'finalTablesolo' from 'finalTable' where 'name1' is "Burnley FC"
+# Then add a new column 'Goals' based on the value of 'winDifference'
 finalTablesolo <- finalTable %>% 
   filter(name1 == "Burnley FC") %>%
   mutate(Goals = ifelse(winDifference >= 0, "Positive Goal Difference", "Negative Goal Difference"))
 
+# Print out the 'finalTablesolo' dataframe that contains the filtered and processed records for "Burnley FC"
 finalTablesolo
+
+# Print out the 'finalTable' dataframe that contains the processed records with team names and goal difference
 finalTable
+
 
 ```
 
 
 ```{r}
-
+# Set a seed for random number generation for reproducibility
 set.seed(123)
+
+# Create a graph object 'solo' from the 'finalTablesolo' dataframe
+# The graph is undirected as specified by the 'directed = FALSE' argument
 solo <- graph_from_data_frame(finalTablesolo, directed = FALSE)
-  ggraph(solo, layout = "fr") +
-  # ggnetwork() %>%
-  # ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+
+# Plot the graph using the 'ggraph' function, with a force-directed layout ('fr')
+# Add edges to the graph with width proportional to the absolute value of 'totalGoalDifference' and color based on 'Goals'
+# Add an arrow at the end of each edge
+# Customize the legend for edge width and edge color
+# Add nodes to the graph and label them with 'name', repelling labels to avoid overlap
+# Use a void theme to remove all non-data ink
+ggraph(solo, layout = "fr") +
   geom_edge_link(aes(width = abs(totalGoalDifference), color = Goals),
              arrow = arrow(type = "closed", length = unit(8, "pt"))) +
   scale_edge_width(name = "Goal Difference", range = c(0.5, 5), guide = guide_legend(title.position = "top", title.hjust = 0.5)) +
@@ -113,5 +159,7 @@ solo <- graph_from_data_frame(finalTablesolo, directed = FALSE)
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void()
 
+# Save the 'finalTable' dataframe to a file named "DataWrangling.RData"
 save(finalTable,  file = "DataWrangling.RData")
+
 ```
