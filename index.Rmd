@@ -33,6 +33,22 @@ This is an R Markdown blog template. This document will be knit to HTML to produ
 3. Commit and push changes when you are ready. The website may take a couple minutes to update automatically after the push, but you may need to clear your browser's cache or view the page in a private/incognito window to see the changes more quickly. 
 
 
+#Shiny app 1
+
+```{r ds-salaries-app, out.width = "100%", out.extra = 'data-external="1" frameborder="no"', fig.cap = "[Data Science Salaries Shiny App](https://michaelp.shinyapps.io/table/)"}
+knitr::include_app("https://michaelp.shinyapps.io/table/",
+                   height = "500px")
+```
+
+
+#Shiny app 2
+
+
+```{r ds-salaries-app, out.width = "100%", out.extra = 'data-external="1" frameborder="no"', fig.cap = "[Data Science Salaries Shiny App](https://michaelp.shinyapps.io/networkGraph/)"}
+knitr::include_app("https://michaelp.shinyapps.io/networkGraph/",
+                   height = "500px")
+```
+
 # Content
 
 You can include text, `code`, and output as usual. Remember to take full advantage of Markdown and follow our [Style Guide](https://acstat231-f22.github.io/home/style-guide.html#Text_narration).
@@ -173,23 +189,32 @@ For typesetting equations appropriately, check out the [AMS-LaTeX quick referenc
 
 Each subsection below the "Tabbed subsections" section heading will appear in a tab. See R Markdown Cookbook [Section 7.6: Put content in tabs](https://bookdown.org/yihui/rmarkdown-cookbook/html-tabs.html) for additional customization options. 
 
-### Bulleted list
+### cluster 1
 
-You can make a bulleted list like this:
+```{r, fig.cap='"1"', out.width="80%", fig.align="center"}
+knitr::include_graphics("img/img-1.png") 
+```
 
-* item 1
-* item 2
-* item 3
-
-
-### Numbered list
+include text here about his data....
 
 
-You can make a numbered list like this
 
-1. First thing I want to say
-2. Second thing I want to say
-3. Third thing I want to say
+### cluster 2
+
+
+knitr::include_graphics("path/to/image3.jpg")
+```{r, fig.cap='"2"', out.width="80%", fig.align="center"}
+knitr::include_graphics("img/img-2.png")
+```
+
+
+
+### cluster 3 
+
+```{r, fig.cap='"3"', out.width="80%", fig.align="center"}
+knitr::include_graphics("img/img-3.png")
+```
+
 
 
 

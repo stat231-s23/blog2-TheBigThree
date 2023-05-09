@@ -1,0 +1,117 @@
+---
+title: 'Data Wrangling'
+author: "Muhammad Ahsan Tahir"
+date: ""
+output: pdf_document
+---
+
+```{r}
+library(RSQLite)
+library(tidyverse)
+library(igraph)
+library(ggraph)
+library(dplyr)
+library(ggnetwork)
+library(tidygraph)
+```
+
+
+
+```{r}
+con <- dbConnect(SQLite(), dbname = "england.db")
+tables <- dbListTables(con)
+tables
+
+result <- dbGetQuery(con, "SELECT * FROM matches")
+result
+```
+
+```{r}
+matchesTable <- dbGetQuery(con, "SELECT * FROM matches")%>%
+  collect()
+matchesTable
+```
+
+```{r}
+teamsTable <- dbGetQuery(con, "SELECT * FROM teams")%>%
+  collect()
+
+```
+```{r}
+filteredMatchesTable <- matchesTable %>%
+  select(team1_id, team2_id, winner, score1, score2, date) %>%
+  na.omit()
+
+processedMatchesTable <- filteredMatchesTable %>%
+  mutate(team1 = pmin(team1_id, team2_id),
+         team2 = pmax(team1_id, team2_id),
+         adjustedWinner = ifelse(winner == 0, 0, ifelse(team1_id == team1, winner, 3 - winner)),
+         adjustedScore1 = ifelse(team1_id == team1, score1, score2),
+         adjustedScore2 = ifelse(team1_id == team1, score2, score1),
+         team1Won = ifelse(adjustedWinner == 1, 1, 0),
+         team2Won = ifelse(adjustedWinner == 2, 1, 0),
+         goalDifference = adjustedScore1 - adjustedScore2) %>%
+  select(team1, team2, team1Won, team2Won, goalDifference, adjustedScore1, adjustedScore2, date)
+
+
+matchesSummary <- processedMatchesTable %>%
+  group_by(team1, team2) %>%
+  summarize(winDifference = sum(team1Won) - sum(team2Won),
+            team1Wins = sum(team1Won),
+            team2Wins = sum(team2Won),
+            totalGoalDifference = sum(goalDifference),
+            team1Goals = sum(adjustedScore1),
+            team2Goals = sum(adjustedScore2)
+            ) %>%
+  ungroup()
+
+matchesSummary
+
+processedMatchesTable
+
+```
+
+```{r}
+teams1Table <- teamsTable %>%
+  mutate(name1 = name,
+         team1 = id) %>%
+  select(team1, name1)
+
+tableWithTeam1Names <- inner_join(matchesSummary, teams1Table, by = "team1")
+
+teams2Table <- teamsTable %>%
+  mutate(name2 = name,
+         team2 = id) %>%
+  select(team2, name2)
+
+finalTable <- inner_join(tableWithTeam1Names, teams2Table, by = "team2") %>%
+  select(name1, name2, winDifference, totalGoalDifference)%>%
+  mutate(Goals = ifelse(winDifference >= 0, "Positive Goal Difference", "Negative Goal Difference"))
+
+finalTablesolo <- finalTable %>% 
+  filter(name1 == "Burnley FC") %>%
+  mutate(Goals = ifelse(winDifference >= 0, "Positive Goal Difference", "Negative Goal Difference"))
+
+finalTablesolo
+finalTable
+
+```
+
+
+```{r}
+
+set.seed(123)
+solo <- graph_from_data_frame(finalTablesolo, directed = FALSE)
+  ggraph(solo, layout = "fr") +
+  # ggnetwork() %>%
+  # ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_edge_link(aes(width = abs(totalGoalDifference), color = Goals),
+             arrow = arrow(type = "closed", length = unit(8, "pt"))) +
+  scale_edge_width(name = "Goal Difference", range = c(0.5, 5), guide = guide_legend(title.position = "top", title.hjust = 0.5)) +
+  scale_color_manual(name = "", values = c("Positive Goal Difference" = "green", "Negative Goal Difference" = "red")) +
+  geom_node_point() +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void()
+
+save(finalTable,  file = "DataWrangling.RData")
+```

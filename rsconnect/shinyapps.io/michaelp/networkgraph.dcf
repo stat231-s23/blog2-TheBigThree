@@ -1,0 +1,13 @@
+name: networkgraph
+title: networkgraph
+username:
+account: michaelp
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9067277
+bundleId: 7195014
+url: https://michaelp.shinyapps.io/networkgraph/
+when: 1683647456.49297
+lastSyncTime: 1683647456.49299
+asMultiple: FALSE
+asStatic: FALSE

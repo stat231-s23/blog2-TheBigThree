@@ -1,0 +1,13 @@
+name: table
+title: table
+username:
+account: michaelp
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9067397
+bundleId: 7195044
+url: https://michaelp.shinyapps.io/table/
+when: 1683647881.67035
+lastSyncTime: 1683647881.67036
+asMultiple: FALSE
+asStatic: FALSE

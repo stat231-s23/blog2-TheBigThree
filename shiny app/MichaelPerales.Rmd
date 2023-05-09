@@ -1,0 +1,101 @@
+---
+title: 'Data Wrangling Shiny App'
+author: "Michael Perales"
+date: "March 21, 2023"
+
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small",   # slightly smaller font for code
+  message=FALSE)  # suppress non-warning messages
+
+# load packages
+library(tidyverse)
+library(rvest)
+library(kableExtra)
+```
+
+```{r}
+theURLPart1 <- "https://fbref.com/en/comps/9/"
+theURLPart2 <- "-Premier-League-Stats"
+```
+
+
+
+```{r, eval = FALSE}
+robotstxt::paths_allowed("https://fbref.com/en/comps/9/2021-2022/2021-2022-Premier-League-Stats")
+```
+
+
+
+
+
+```{r}
+# Create an empty list to store the tables data
+tables <- list()
+
+# Loop through each season from 2013 to 2022
+for (season in seq(from = 2013, to = 2022, by = 1)) {
+  
+  # Create a URL string for each season and read the HTML content
+  tables[[season]] <- paste(theURLPart1, toString(season-1), "-",
+                            toString(season), "/",  toString(season-1), "-",
+                            toString(season), theURLPart2, sep = "") %>%
+    read_html() %>% 
+    
+    # Extract the 5th table from the HTML content
+    html_nodes("table")%>%
+    purrr::pluck(5) %>%
+    
+    # Convert the HTML table to a data frame and rename the columns
+    html_table() %>%
+    setNames(c("column1", names(.)[-1]))
+  
+  # Remove the last row of the data frame (contains total values)
+  tables[[season]] <- tail(tables[[season]], n = nrow(tables[[season]]) - 1)
+}
+
+# Remove the first 2012 elements of the list (empty tables)
+tables <- tables[-c(1:2012)]
+
+# Select specific columns from each data frame in the list
+tables <- purrr::map(tables, ~ select(.x, column1, 3, 15))
+
+# Rename the selected columns in each data frame
+tables <- purrr::map(tables, ~ setNames(.,c("Squad", "Matches Played", "Clean Sheets")))
+
+# Rename the list elements with the corresponding season year
+names(tables) <- c("2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022")
+
+# Print the final list of tables data
+tables
+
+
+```
+
+```{r}
+library(dplyr)
+# Merge the tables and add a column with their corresponding year
+clean_sheets_table <- bind_rows(tables, .id = "Year")
+# Rename the column names
+names(clean_sheets_table) <- c("Year", "Squad", "Matches Played", "Clean Sheets")
+# Convert the Year column to integer
+clean_sheets_table$Year <- as.integer(clean_sheets_table$Year)
+
+# Convert the 'Clean Sheets' column to numeric and then to integer
+clean_sheets_table$`Clean Sheets` <- as.integer(as.numeric(clean_sheets_table$`Clean Sheets`))
+
+# View the merged table
+clean_sheets_table
+#save the data
+save(clean_sheets_table, file = "MichaelPerales.RData")
+
+```
+
+
+
+
+

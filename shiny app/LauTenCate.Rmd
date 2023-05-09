@@ -1,0 +1,65 @@
+---
+title: 'Data Wrangling Lau'
+author: "Lau ten Cate"
+date: "March 21, 2023"
+always_allow_html: yes
+output:
+  pdf_document:
+    toc: yes 
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, message = FALSE)
+
+# improve digit and NA display 
+options(scipen = 1, knitr.kable.NA = '')
+
+# load packages
+library(tidyverse)
+library(kableExtra)
+library(rvest)
+```
+
+```{r}
+# 1. Identify page where website is listed
+league_url <- "https://www.myfootballfacts.com/premier-league-winners/"
+
+# 2. Confirm bots are allowed to access the page 
+robotstxt::paths_allowed(league_url)
+
+```
+
+```{r}
+league_url <- "https://www.myfootballfacts.com/premier-league-winners/" 
+
+  table <- league_url %>%
+  read_html() %>%
+  html_elements("table") 
+
+league_winners <-table %>%
+  purrr::pluck(1)%>%
+  html_table()
+head(league_winners)
+
+colnames(league_winners)
+ncol(league_winners)
+
+colnames(league_winners) <- c("Season", "Winner", "Played", "Won", "Drawn", "Lost", 
+                              "Goals For", "Goals Against", "Goal Difference", "Points", 
+                              "PPG")
+
+league_winners %>%
+  select(Season,Winner, Points)
+
+league_winners_last_10_years <- league_winners %>%
+  mutate(Year = 1 + as.numeric(substr(Season, 1, 4))) %>%
+  select(Year, Winner, Points) %>%
+  filter(Year > 2012)
+kable(league_winners_last_10_years, longtable = TRUE)
+
+save(league_winners_last_10_years,  file = "LauwrangledData.RData")
+```
+
+

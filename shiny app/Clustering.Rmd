@@ -1,0 +1,178 @@
+---
+title: 'STAT 231: Problem Set 10B'
+author: "Muhammad Ahsan Tahir"
+output: pdf_document
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+
+# load packages here
+library(tidyverse)
+library(ggplot2)
+library(ggrepel)
+library(broom)
+library(GGally)
+
+```
+
+
+```{r}
+load("MuhammadAhsanTahir.RData")
+```
+
+```{r}
+groupedTable <- attacking_table %>%
+  select(Squad, MP, W, GF, GA, Pts) %>%
+  group_by(Squad) %>%
+  summarise(totalMatches = sum(MP),
+            totalWins = sum(W),
+            totalGoals = sum(GF),
+            totalPoints = sum(Pts),
+            totalGoalsConceded = sum(GA)) %>%
+  mutate(WinPercent = totalWins/totalMatches * 100,
+         GoalsPerMatch = totalGoals/totalMatches,
+         PointsPerMatch = totalPoints/totalMatches,
+         GoalsConcededPerMatch = totalGoalsConceded/totalMatches
+         ) %>%
+  select(-totalMatches, -totalWins, -totalGoals, -totalPoints, -totalGoalsConceded) 
+
+groupedTable
+```
+
+```{r elbow-plot}
+# set the seed for reproducibility
+set.seed(1877090)
+
+tableForClustering <- groupedTable %>%
+  select(WinPercent, GoalsPerMatch, GoalsConcededPerMatch)%>%
+  mutate(across(where(is.numeric),  ~scale(.)[,1], .names = "{.col}_scaled")) %>%
+  select(WinPercent_scaled, GoalsPerMatch_scaled, GoalsConcededPerMatch_scaled)
+  
+
+# Iterate through clustering algorithm for 10 different values of k
+elbow_plot <- tibble(k = 1:10) %>%
+  mutate(
+    # List-column of 10 kmeans objects 
+    # (apply `kmeans()` to each value of `k`)
+    kmeans_results = purrr::map(k, ~kmeans(tableForClustering, .x)),
+    # List-column of "glanced" model summaries for each kmeans object
+    # (apply `glance()` to each corresponding result after running `kmeans()`)
+    glanced = purrr::map(kmeans_results, glance)) %>% 
+  # Turn `glanced` list-column into regular tibble columns
+  unnest(cols = c(glanced))
+
+# Construct elbow plot
+ggplot(elbow_plot, aes(x = k, y = tot.withinss)) +
+  geom_point() + 
+  geom_line() +
+  scale_x_continuous(breaks = 1:10) +
+  labs(x = "Number of clusters (k)", 
+       y = "Total within-cluster sum of squares")
+```
+```{r}
+meanGoalsPerMatch <- mean(groupedTable$GoalsPerMatch)
+meanGoalsConcededPerMatch <- mean(groupedTable$GoalsConcededPerMatch)
+meanWinPercent <- mean(groupedTable$WinPercent)
+
+
+sdGoalsPerMatch <- sd(groupedTable$GoalsPerMatch)
+sdGoalsConcededPerMatch <- sd(groupedTable$GoalsConcededPerMatch)
+sdWinPercent <- sd(groupedTable$WinPercent)
+```
+
+
+
+
+```{r}
+#Thus, we should use 3 clusters from looking at the elbow plot.
+# Perform k-means clustering with k = 3
+
+# set the seed for reproducibility
+set.seed(1877090)
+
+footballKmeans <- tableForClustering %>% 
+  kmeans(centers = 3, nstart = 20)
+
+footballKmeansSummaries <- tidy(footballKmeans) %>%
+  mutate(GoalsPerMatch = meanGoalsPerMatch + (sdGoalsPerMatch * GoalsPerMatch_scaled),
+         GoalsConcededPerMatch = meanGoalsConcededPerMatch + (sdGoalsConcededPerMatch * GoalsConcededPerMatch_scaled),
+         WinPercent = meanWinPercent + (sdWinPercent * WinPercent_scaled)
+         )
+  
+# Add cluster assignment as a factor to the data frame
+# (argument order MUST be: kmeans object first, original data frame second)
+footballWithKmeans <- augment(footballKmeans, groupedTable)
+
+footballWithKmeans
+
+```
+
+
+```{r}
+# Visualize the cluster assignments and centroids
+ggplot(footballWithKmeans, aes(x = WinPercent, y = GoalsPerMatch)) + 
+  geom_point(aes(color = .cluster, shape = .cluster)) +
+  geom_text_repel(aes(label = Squad, color = .cluster), 
+                  size = 3, max.overlaps = 15, show.legend = FALSE) +
+  # Add centroid labels to plot
+  geom_label(data = footballKmeansSummaries, aes(label = cluster, color = cluster),
+             size = 3,
+             label.r = unit(0.5, "lines"),
+             label.size = 1.5,
+             label.padding = unit(0.5, "lines"),
+             show.legend = FALSE) +
+  labs(x = "Percent Of Matches Won",
+       y = "Average Goals Scored Per Match",
+       color = "Cluster",
+       shape = "Cluster") +
+  theme_classic()
+```
+
+```{r}
+# Visualize the cluster assignments and centroids
+ggplot(footballWithKmeans, aes(x = WinPercent, y = GoalsConcededPerMatch)) + 
+  geom_point(aes(color = .cluster, shape = .cluster)) +
+  geom_text_repel(aes(label = Squad, color = .cluster), 
+                  size = 3, max.overlaps = 15, show.legend = FALSE) +
+  # Add centroid labels to plot
+  geom_label(data = footballKmeansSummaries, aes(label = cluster, color = cluster),
+             size = 3,
+             label.r = unit(0.5, "lines"),
+             label.size = 1.5,
+             label.padding = unit(0.5, "lines"),
+             show.legend = FALSE) +
+  labs(x = "Percent Of Matches Won",
+       y = "Average Goals Conceded Per Match",
+       color = "Cluster",
+       shape = "Cluster") +
+  theme_classic()
+```
+
+```{r}
+# Visualize the cluster assignments and centroids
+ggplot(footballWithKmeans, aes(x = GoalsConcededPerMatch, y = GoalsPerMatch)) + 
+  geom_point(aes(color = .cluster, shape = .cluster)) +
+  geom_text_repel(aes(label = Squad, color = .cluster), 
+                  size = 3, max.overlaps = 15, show.legend = FALSE) +
+  # Add centroid labels to plot
+  geom_label(data = footballKmeansSummaries, aes(label = cluster, color = cluster),
+             size = 3,
+             label.r = unit(0.5, "lines"),
+             label.size = 1.5,
+             label.padding = unit(0.5, "lines"),
+             show.legend = FALSE) +
+  labs(x = "Average Goals Conceded Per Match",
+       y = "Average Goals Scored Per Match",
+       color = "Cluster",
+       shape = "Cluster") +
+  theme_classic()
+```
+
+
+
+
+
+
