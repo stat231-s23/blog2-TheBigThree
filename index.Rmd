@@ -32,6 +32,12 @@ This is an R Markdown blog template sklfjsdkljflsjflasdklj. This document will b
 
 3.  Commit and push changes when you are ready. The website may take a couple minutes to update automatically after the push, but you may need to clear your browser's cache or view the page in a private/incognito window to see the changes more quickly.
 
+#Bar Chart
+
+```{r, fig.cap='"Man City"', out.width="80%", fig.align="center"}
+knitr::include_graphics("img/bar-graph.png") 
+```
+
 # Table
 
 ```{r table-app, out.width = "250%", out.extra = 'data-external="1" frameborder="no"', fig.cap = "[Data Science Premier League Table Shiny App](https://michaelp.shinyapps.io/table/)"}
