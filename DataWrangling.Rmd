@@ -1,7 +1,6 @@
 ---
 title: 'Data Wrangling'
-author: "Muhammad Ahsan Tahir"
-date: ""
+author: "Muhammad Ahsan Tahir, Lau, Michael"
 output: pdf_document
 ---
 
@@ -120,7 +119,7 @@ finalTable <- inner_join(tableWithTeam1Names, teams2Table, by = "team2") %>%
   select(name1, name2, winDifference, totalGoalDifference)%>%
   mutate(Goals = ifelse(winDifference >= 0, "Positive Goal Difference", "Negative Goal Difference"))
 
-# Create a new table 'finalTablesolo' from 'finalTable' where 'name1' is "Burnley FC"
+# Create a new table 'finalTablesolo' from 'finalTable' where 'name1' is "Burnley FC" to test making a network graph
 # Then add a new column 'Goals' based on the value of 'winDifference'
 finalTablesolo <- finalTable %>% 
   filter(name1 == "Burnley FC") %>%

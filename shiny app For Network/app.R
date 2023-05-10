@@ -55,9 +55,14 @@ ui <- navbarPage(
 ############
 server <- function(input, output, session) {
   
+  
   getNetGraph <- reactive({
     finalTablesolo <- finalTable %>%
+      #filter to get matches in which selected team took part
       filter(name1 == input$netvar | name2 == input$netvar) %>%
+      #Making selected team the subject team and the other team as the object team
+      #And fixing the signs of the totalGoalDifference, and winDifference.
+      #And adding new columns for absolute of Goal/Win Difference and sign of goal/win difference.
       mutate(subjectTeam = input$netvar,
              objectTeam = ifelse(name1 == input$netvar, name2, name1),
              totalGoalDifference = ifelse(name1 == input$netvar, totalGoalDifference, -totalGoalDifference),
@@ -66,8 +71,9 @@ server <- function(input, output, session) {
              Wins = ifelse(winDifference > 0, "Positive Win Difference",ifelse(winDifference == 0,"No Win Difference","Negative Win Difference")),
              absGoalDiff = abs(totalGoalDifference),
              absWinDiff = abs(winDifference)) %>%
+      #Selecting relevant columns
       select(subjectTeam, objectTeam, absGoalDiff, absWinDiff, Goals, Wins)
-    solo <- graph_from_data_frame(finalTablesolo, directed = FALSE)
+    solo <- graph_from_data_frame(finalTablesolo, directed = FALSE) #converting to graph
     return (solo)
   })
   

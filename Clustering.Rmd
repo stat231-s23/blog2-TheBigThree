@@ -1,6 +1,6 @@
 ---
-title: 'STAT 231: Problem Set 10B'
-author: "Muhammad Ahsan Tahir"
+title: 'Stat 231: Clustering for Blog'
+author: "Muhammad Ahsan Tahir, Lau, Michael"
 output: pdf_document
 ---
 
@@ -24,6 +24,8 @@ load("MuhammadAhsanTahir.RData")
 ```
 
 ```{r}
+
+#Making a summary of statistics for each squad
 groupedTable <- attacking_table %>%
   select(Squad, MP, W, GF, GA, Pts) %>%
   group_by(Squad) %>%
@@ -37,6 +39,7 @@ groupedTable <- attacking_table %>%
          PointsPerMatch = totalPoints/totalMatches,
          GoalsConcededPerMatch = totalGoalsConceded/totalMatches
          ) %>%
+  #Discarding columns we do not need
   select(-totalMatches, -totalWins, -totalGoals, -totalPoints, -totalGoalsConceded) 
 
 groupedTable
@@ -48,7 +51,9 @@ set.seed(1877090)
 
 tableForClustering <- groupedTable %>%
   select(WinPercent, GoalsPerMatch, GoalsConcededPerMatch)%>%
+  #Standardizing Variables
   mutate(across(where(is.numeric),  ~scale(.)[,1], .names = "{.col}_scaled")) %>%
+  #Selecting only the variables needed
   select(WinPercent_scaled, GoalsPerMatch_scaled, GoalsConcededPerMatch_scaled)
   
 
@@ -72,7 +77,10 @@ ggplot(elbow_plot, aes(x = k, y = tot.withinss)) +
   labs(x = "Number of clusters (k)", 
        y = "Total within-cluster sum of squares")
 ```
+
 ```{r}
+#Calculating the mean and SD of columns in the groupedTable so we can unstandardize them later on.
+
 meanGoalsPerMatch <- mean(groupedTable$GoalsPerMatch)
 meanGoalsConcededPerMatch <- mean(groupedTable$GoalsConcededPerMatch)
 meanWinPercent <- mean(groupedTable$WinPercent)
@@ -97,6 +105,7 @@ footballKmeans <- tableForClustering %>%
   kmeans(centers = 3, nstart = 20)
 
 footballKmeansSummaries <- tidy(footballKmeans) %>%
+  #Unstandardizing Variables
   mutate(GoalsPerMatch = meanGoalsPerMatch + (sdGoalsPerMatch * GoalsPerMatch_scaled),
          GoalsConcededPerMatch = meanGoalsConcededPerMatch + (sdGoalsConcededPerMatch * GoalsConcededPerMatch_scaled),
          WinPercent = meanWinPercent + (sdWinPercent * WinPercent_scaled)

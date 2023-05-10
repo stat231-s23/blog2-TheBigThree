@@ -70,6 +70,8 @@ We will be focusing our analysis on Cluster 1 consisting of Manchester City, Man
 
 A network graph is a visual representation of the relationships between entities; in this case, football teams. Each team is represented as a node in the graph, and the edges (lines connecting the nodes) represent the goal differential between two teams. This provides a clear, intuitive way to understand the relationships and disparities among teams based on their past performance.
 
+To make these network graphs we used data from openFootball.
+
 **The Shiny app** allows users to interact with the network graph, selecting a specific team to view their goal differential with every other team they played against in the last ten years. This interactive feature allows users to explore data at a granular level, making the analysis more personal and engaging.
 
 For example, when a user selects Manchester City, the app highlight the team's node and its connections with other teams. The edge thickness could vary according to the goal difference, and the color could indicate a positive or negative differential. This way, users can easily perceive how well the selected team performed against others in terms of goal/Win difference. 
@@ -80,17 +82,17 @@ knitr::include_app("https://michaelp.shinyapps.io/networkGraph/",
 
 ```
 
-In this case, the network graph shows a pretty dominant Manchester City Team as all the arrows show a positive goal difference, except two which show a neutral goal difference. Hence, Manchester City does not have a negative goal difference against any other premier league team. 
+* The network graph shows a pretty dominant Manchester City Team as all the arrows show a positive goal difference, except two which show a neutral goal difference. Hence, Manchester City does not have a negative goal difference against any other premier league team. 
 
-Manchester United also performed really well with negative goal differences against only Manchester City, and Tottenham Hotspur. 
+* Manchester United also performed really well with negative goal differences against only Manchester City, and Tottenham Hotspur. 
 
-Liverpool also did really well with negative goal differences against only Manchester City, and Manchester United.
+* Liverpool also did really well with negative goal differences against only Manchester City, and Manchester United.
 
-Tottenham Hotspurs had negative goal differences against four teams: Manchester City, Liverpool, Arsenal, and Chelsea.
+* Tottenham Hotspurs had negative goal differences against four teams: Manchester City, Liverpool, Arsenal, and Chelsea.
 
-Chelsea had negative goal differences against three teams: Manchester City, Manchester United, and Liverpool.
+* Chelsea had negative goal differences against three teams: Manchester City, Manchester United, and Liverpool.
 
-Finally, Arsenal had negative goal differences against five teams: Manchester City, Manchester United, Liverpool, Chelsea, and Brighton and Hove Albion.
+* Arsenal had negative goal differences against five teams: Manchester City, Manchester United, Liverpool, Chelsea, and Brighton and Hove Albion.
 
 Thus, from this visualization we can see that the high-performing teams only had negative goal differences against other high-performing teams, except Arsenal. From further inspection it can be seen that the goal difference between Arsenal and Brighton and Hove Albion is very small and as Brighton and Hove Albion only played in the Premier League for four out of the ten seasons this might not be as significant.
 
@@ -98,7 +100,7 @@ Thus, from this visualization we can see that the high-performing teams only had
 
 In our pursuit of providing an encompassing perspective on English Premier League's last decade, we have curated an interactive table that manifests key statistics for all the teams that participated during this period. This dynamic platform offers the convenience of a broad overview and the specificity of individual team statistics, providing a versatile tool for both casual browsers and dedicated analysts.
 
-The data fueling this interactive feature has been procured from a reputable source, FBref, and specifically, from their comprehensive compilation of the 2021-2022 Premier League season statistics (https://fbref.com/en/comps/9/2021-2022/2021-2022-Premier-League-Stats).
+The data fueling this interactive feature has been procured from a reputable source, FBref, and specifically, from their comprehensive compilation of the Premier League season statistics.
 
 However, raw data, while rich in potential insights, can often be challenging to navigate and interpret. Recognizing this, we've employed robust data wrangling techniques to refine this raw data, focusing on relevant variables and ensuring that they are presented in an easily comprehensible format.
 
@@ -115,7 +117,6 @@ Looking at the table by squad, we see that Manchester City has very high overall
 ## Decade-long Review of Premier League Winners through a Bar Graph
 
 Our exploration concludes with a visual representation in the form of a bar graph, delineating the total points scored by each victorious Premier League team over the past decade. Each win in a season contributes three points to a team's total, providing a straightforward metric to gauge the performance of a team over the season.
-
 
 
 ```{r}
@@ -140,40 +141,47 @@ In conclusion, while data science methodologies and tools like R programming, k-
 
 # References
 
-All data sources, any key R packages, and any other sources used in developing your blog should be cited in full in a list of references at the end of your blog. Your blog post should also link to these sources as they are discussed. You may choose any reference style as long as sources are fully cited (try to be consistent!).
-
-Typically, references in R Markdown (and LaTeX) files are [incorporated with a BibTeX database](https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html) (a .bib file). You can try this approach or manually include either a numbered or alphabetized list.
-
-Columbia University has compiled some guidance on [how to cite data](https://guides.library.columbia.edu/datacitation). Some data sources will give you the citation information to copy and paste. Use the provided citations or citation styles in those cases.
-
-You can list R package citations with the code `citation("packageName")` in the console and then copy (and reformat as needed) the relevant text, e.g.,
-
-```{r}
-citation("DT")
-```
-
-The following citations are based on the American Statistical Association citation style (not all of these references are used in this document).:
 
 <!-- Textbook -->
 
-Baumer, B. S., Kaplan, D. T., and Horton, N. J. (2021), *Modern Data Science with R* (2nd ed.), Boca Raton, FL: CRC Press.
-
-<!-- Journal article -->
-
-Broman, K. W. and Woo, K. H. (2018), "Data Organization in Spreadsheets," *The American Statistician*, 72:1, 2-10, doi: [10.1080/00031305.2017.1375989](https://doi.org/10.1080/00031305.2017.1375989)
+* Baumer, B. S., Kaplan, D. T., and Horton, N. J. (2021), *Modern Data Science with R* (2nd ed.), Boca Raton, FL: CRC Press.
 
 <!-- Website -->
 
-Columbia University Libraries (n.d.), "Data Citation," available at <https://guides.library.columbia.edu/datacitation>.
+* FBref. (2023). Premier League Statistics. FBref. https://fbref.com/en/comps/9/Premier-League-Stats
 
-<!-- Journal article -->
-
-McNamara, A. and Horton N. J. (2018) "Wrangling Categorical Data in R," *The American Statistician*, 72:1, 97-104, doi: [10.1080/00031305.2017.1356375](https://doi.org/10.1080/00031305.2017.1356375).
+* My Football Facts. (2023). Premier League Winners List & History. My Football Facts. https://www.myfootballfacts.com/premier-league-winners/
 
 <!-- Dataset -->
 
-Shah, Syed A. A. (October 2022), "Starbucks Drinks" (Version 1), *Kaggle*, available at <https://www.kaggle.com/datasets/syedasimalishah/starbucks-drinks>.
+* OpenFootball (2021). English Premier League, Seasons 2012-2021. https://github.com/openfootball/england
 
-<!-- R package -->
+<!-- R packages -->
 
-Xie Y, Cheng J, Tan X (2022). "DT: A Wrapper of the JavaScript Library 'DataTables'," R package version 0.24, available at <https://CRAN.R-project.org/package=DT>.
+* tidyverse: Wickham et al. (2019). "Welcome to the tidyverse". Journal of Open Source Software, 4(43), 1686. https://doi.org/10.21105/joss.01686
+
+* ggplot2: Wickham (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. https://ggplot2.tidyverse.org/
+
+* ggrepel: Slowikowski (2018). ggrepel: Repel overlapping text labels. https://github.com/slowkow/ggrepel
+
+* broom: Robinson and Hayes (2020). broom: Convert Statistical Analysis Objects into Tidy Tibbles. https://broom.tidymodels.org/
+
+* GGally: Schloerke et al. (2018). GGally: Extension to ggplot2. https://CRAN.R-project.org/package=GGally
+
+* RSQLite: Wickham and Müller (2021). RSQLite: 'SQLite' Interface for R. https://CRAN.R-project.org/package=RSQLite
+
+* igraph: Csardi and Nepusz (2006). The igraph software package for complex network research. InterJournal, Complex Systems 1695. https://igraph.org/
+
+* ggraph: Pedersen (2021). ggraph: An implementation of Grammar of Graphics for Graphs and Networks. https://CRAN.R-project.org/package=ggraph
+
+* dplyr: Wickham et al. (2021). dplyr: A Grammar of Data Manipulation. https://dplyr.tidyverse.org/
+
+* ggnetwork: Csardi and Nepusz (2006). The igraph software package for complex network research. InterJournal, Complex Systems 1695. https://CRAN.R-project.org/package=ggnetwork
+
+* tidygraph: Pedersen (2021). tidygraph: A Tidy API for Graph Manipulation. https://CRAN.R-project.org/package=tidygraph
+
+* shiny: Chang et al. (2021). shiny: Web Application Framework for R. https://shiny.rstudio.com/
+
+* shinythemes: Chang (2018). shinythemes: Themes for Shiny. https://CRAN.R-project.org/package=shinythemes
+
+* DT: Xie et al. (2021). DT: A Wrapper of the JavaScript Library 'DataTables'. https://CRAN.R-project.org/package=DT

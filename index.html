@@ -7,7 +7,7 @@
 
         <meta name="author" content="Lau, Ahsan, Michael" />
     
-        <meta name="date" content="2023-04-13" />
+        <meta name="date" content="2023-05-10" />
     
     <title>Premier League Analysis</title>
 
@@ -1224,7 +1224,7 @@ margin-left: 0 !important;
     <div id="postamble" data-toggle="wy-nav-shift" class="status">
                   <p class="author"><span class="glyphicon glyphicon-user"></span> Lau,
 Ahsan, Michael</p>
-                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> 04/13/2023</p>
+                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> 05/10/2023</p>
           </div>
    </div>
      
@@ -1320,6 +1320,7 @@ as a node in the graph, and the edges (lines connecting the nodes)
 represent the goal differential between two teams. This provides a
 clear, intuitive way to understand the relationships and disparities
 among teams based on their past performance.</p>
+<p>To make these network graphs we used data from openFootball.</p>
 <p><strong>The Shiny app</strong> allows users to interact with the
 network graph, selecting a specific team to view their goal differential
 with every other team they played against in the last ten years. This
@@ -1333,22 +1334,24 @@ perceive how well the selected team performed against others in terms of
 goal/Win difference.</p>
 <iframe src="https://michaelp.shinyapps.io/networkGraph/?showcase=0" width="768" height="800px" data-external="1">
 </iframe>
-<p>In this case, the network graph shows a pretty dominant Manchester
-City Team as all the arrows show a positive goal difference, except two
-which show a neutral goal difference. Hence, Manchester City does not
-have a negative goal difference against any other premier league
-team.</p>
-<p>Manchester United also performed really well with negative goal
-differences against only Manchester City, and Tottenham Hotspur.</p>
-<p>Liverpool also did really well with negative goal differences against
-only Manchester City, and Manchester United.</p>
-<p>Tottenham Hotspurs had negative goal differences against four teams:
-Manchester City, Liverpool, Arsenal, and Chelsea.</p>
-<p>Chelsea had negative goal differences against three teams: Manchester
-City, Manchester United, and Liverpool.</p>
-<p>Finally, Arsenal had negative goal differences against five teams:
+<ul>
+<li><p>The network graph shows a pretty dominant Manchester City Team as
+all the arrows show a positive goal difference, except two which show a
+neutral goal difference. Hence, Manchester City does not have a negative
+goal difference against any other premier league team.</p></li>
+<li><p>Manchester United also performed really well with negative goal
+differences against only Manchester City, and Tottenham
+Hotspur.</p></li>
+<li><p>Liverpool also did really well with negative goal differences
+against only Manchester City, and Manchester United.</p></li>
+<li><p>Tottenham Hotspurs had negative goal differences against four
+teams: Manchester City, Liverpool, Arsenal, and Chelsea.</p></li>
+<li><p>Chelsea had negative goal differences against three teams:
+Manchester City, Manchester United, and Liverpool.</p></li>
+<li><p>Arsenal had negative goal differences against five teams:
 Manchester City, Manchester United, Liverpool, Chelsea, and Brighton and
-Hove Albion.</p>
+Hove Albion.</p></li>
+</ul>
 <p>Thus, from this visualization we can see that the high-performing
 teams only had negative goal differences against other high-performing
 teams, except Arsenal. From further inspection it can be seen that the
@@ -1366,7 +1369,7 @@ and the specificity of individual team statistics, providing a versatile
 tool for both casual browsers and dedicated analysts.</p>
 <p>The data fueling this interactive feature has been procured from a
 reputable source, FBref, and specifically, from their comprehensive
-compilation of the 2021-2022 Premier League season statistics (<a href="https://fbref.com/en/comps/9/2021-2022/2021-2022-Premier-League-Stats" class="uri">https://fbref.com/en/comps/9/2021-2022/2021-2022-Premier-League-Stats</a>).</p>
+compilation of the Premier League season statistics.</p>
 <p>However, raw data, while rich in potential insights, can often be
 challenging to navigate and interpret. Recognizing this, we’ve employed
 robust data wrangling techniques to refine this raw data, focusing on
@@ -1453,58 +1456,50 @@ on the balance of predictability and surprise, order and chaos.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p>All data sources, any key R packages, and any other sources used in
-developing your blog should be cited in full in a list of references at
-the end of your blog. Your blog post should also link to these sources
-as they are discussed. You may choose any reference style as long as
-sources are fully cited (try to be consistent!).</p>
-<p>Typically, references in R Markdown (and LaTeX) files are <a href="https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html">incorporated
-with a BibTeX database</a> (a .bib file). You can try this approach or
-manually include either a numbered or alphabetized list.</p>
-<p>Columbia University has compiled some guidance on <a href="https://guides.library.columbia.edu/datacitation">how to cite
-data</a>. Some data sources will give you the citation information to
-copy and paste. Use the provided citations or citation styles in those
-cases.</p>
-<p>You can list R package citations with the code
-<code>citation(&quot;packageName&quot;)</code> in the console and then copy (and
-reformat as needed) the relevant text, e.g.,</p>
-<pre><code>## 
-## To cite package &#39;DT&#39; in publications use:
-## 
-##   Xie Y, Cheng J, Tan X (2023). _DT: A Wrapper of the JavaScript
-##   Library &#39;DataTables&#39;_. R package version 0.27,
-##   &lt;https://CRAN.R-project.org/package=DT&gt;.
-## 
-## A BibTeX entry for LaTeX users is
-## 
-##   @Manual{,
-##     title = {DT: A Wrapper of the JavaScript Library &#39;DataTables&#39;},
-##     author = {Yihui Xie and Joe Cheng and Xianying Tan},
-##     year = {2023},
-##     note = {R package version 0.27},
-##     url = {https://CRAN.R-project.org/package=DT},
-##   }</code></pre>
-<p>The following citations are based on the American Statistical
-Association citation style (not all of these references are used in this
-document).:</p>
 <!-- Textbook -->
-<p>Baumer, B. S., Kaplan, D. T., and Horton, N. J. (2021), <em>Modern
-Data Science with R</em> (2nd ed.), Boca Raton, FL: CRC Press.</p>
-<!-- Journal article -->
-<p>Broman, K. W. and Woo, K. H. (2018), “Data Organization in
-Spreadsheets,” <em>The American Statistician</em>, 72:1, 2-10, doi: <a href="https://doi.org/10.1080/00031305.2017.1375989">10.1080/00031305.2017.1375989</a></p>
+<ul>
+<li>Baumer, B. S., Kaplan, D. T., and Horton, N. J. (2021), <em>Modern
+Data Science with R</em> (2nd ed.), Boca Raton, FL: CRC Press.</li>
+</ul>
 <!-- Website -->
-<p>Columbia University Libraries (n.d.), “Data Citation,” available at
-<a href="https://guides.library.columbia.edu/datacitation" class="uri">https://guides.library.columbia.edu/datacitation</a>.</p>
-<!-- Journal article -->
-<p>McNamara, A. and Horton N. J. (2018) “Wrangling Categorical Data in
-R,” <em>The American Statistician</em>, 72:1, 97-104, doi: <a href="https://doi.org/10.1080/00031305.2017.1356375">10.1080/00031305.2017.1356375</a>.</p>
+<ul>
+<li><p>FBref. (2023). Premier League Statistics. FBref. <a href="https://fbref.com/en/comps/9/Premier-League-Stats" class="uri">https://fbref.com/en/comps/9/Premier-League-Stats</a></p></li>
+<li><p>My Football Facts. (2023). Premier League Winners List &amp;
+History. My Football Facts. <a href="https://www.myfootballfacts.com/premier-league-winners/" class="uri">https://www.myfootballfacts.com/premier-league-winners/</a></p></li>
+</ul>
 <!-- Dataset -->
-<p>Shah, Syed A. A. (October 2022), “Starbucks Drinks” (Version 1),
-<em>Kaggle</em>, available at <a href="https://www.kaggle.com/datasets/syedasimalishah/starbucks-drinks" class="uri">https://www.kaggle.com/datasets/syedasimalishah/starbucks-drinks</a>.</p>
-<!-- R package -->
-<p>Xie Y, Cheng J, Tan X (2022). “DT: A Wrapper of the JavaScript
-Library ‘DataTables’,” R package version 0.24, available at <a href="https://CRAN.R-project.org/package=DT" class="uri">https://CRAN.R-project.org/package=DT</a>.</p>
+<ul>
+<li>OpenFootball (2021). English Premier League, Seasons 2012-2021. <a href="https://github.com/openfootball/england" class="uri">https://github.com/openfootball/england</a></li>
+</ul>
+<!-- R packages -->
+<ul>
+<li><p>tidyverse: Wickham et al. (2019). “Welcome to the tidyverse”.
+Journal of Open Source Software, 4(43), 1686. <a href="https://doi.org/10.21105/joss.01686" class="uri">https://doi.org/10.21105/joss.01686</a></p></li>
+<li><p>ggplot2: Wickham (2016). ggplot2: Elegant Graphics for Data
+Analysis. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org/" class="uri">https://ggplot2.tidyverse.org/</a></p></li>
+<li><p>ggrepel: Slowikowski (2018). ggrepel: Repel overlapping text
+labels. <a href="https://github.com/slowkow/ggrepel" class="uri">https://github.com/slowkow/ggrepel</a></p></li>
+<li><p>broom: Robinson and Hayes (2020). broom: Convert Statistical
+Analysis Objects into Tidy Tibbles. <a href="https://broom.tidymodels.org/" class="uri">https://broom.tidymodels.org/</a></p></li>
+<li><p>GGally: Schloerke et al. (2018). GGally: Extension to ggplot2. <a href="https://CRAN.R-project.org/package=GGally" class="uri">https://CRAN.R-project.org/package=GGally</a></p></li>
+<li><p>RSQLite: Wickham and Müller (2021). RSQLite: ‘SQLite’ Interface
+for R. <a href="https://CRAN.R-project.org/package=RSQLite" class="uri">https://CRAN.R-project.org/package=RSQLite</a></p></li>
+<li><p>igraph: Csardi and Nepusz (2006). The igraph software package for
+complex network research. InterJournal, Complex Systems 1695. <a href="https://igraph.org/" class="uri">https://igraph.org/</a></p></li>
+<li><p>ggraph: Pedersen (2021). ggraph: An implementation of Grammar of
+Graphics for Graphs and Networks. <a href="https://CRAN.R-project.org/package=ggraph" class="uri">https://CRAN.R-project.org/package=ggraph</a></p></li>
+<li><p>dplyr: Wickham et al. (2021). dplyr: A Grammar of Data
+Manipulation. <a href="https://dplyr.tidyverse.org/" class="uri">https://dplyr.tidyverse.org/</a></p></li>
+<li><p>ggnetwork: Csardi and Nepusz (2006). The igraph software package
+for complex network research. InterJournal, Complex Systems 1695. <a href="https://CRAN.R-project.org/package=ggnetwork" class="uri">https://CRAN.R-project.org/package=ggnetwork</a></p></li>
+<li><p>tidygraph: Pedersen (2021). tidygraph: A Tidy API for Graph
+Manipulation. <a href="https://CRAN.R-project.org/package=tidygraph" class="uri">https://CRAN.R-project.org/package=tidygraph</a></p></li>
+<li><p>shiny: Chang et al. (2021). shiny: Web Application Framework for
+R. <a href="https://shiny.rstudio.com/" class="uri">https://shiny.rstudio.com/</a></p></li>
+<li><p>shinythemes: Chang (2018). shinythemes: Themes for Shiny. <a href="https://CRAN.R-project.org/package=shinythemes" class="uri">https://CRAN.R-project.org/package=shinythemes</a></p></li>
+<li><p>DT: Xie et al. (2021). DT: A Wrapper of the JavaScript Library
+‘DataTables’. <a href="https://CRAN.R-project.org/package=DT" class="uri">https://CRAN.R-project.org/package=DT</a></p></li>
+</ul>
 </div>
 </div>
 
