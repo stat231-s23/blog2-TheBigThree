@@ -1,6 +1,6 @@
 ---
 title: "Premier League Analysis"
-author: "Lau, Ahsan, Michael Perales" 
+author: "Lau, Ahsan, Michael" 
 date: "04/13/2023"
 output:
   rmdformats::readthedown:
@@ -22,7 +22,7 @@ library(tidyverse)
 
 # Intro
 
-This is an R Markdown blog template sklfjsdkljflsjflasdklj. This document will be knit to HTML to produce a webpage that will be hosted publicly via GitHub.
+This is an R Markdown blog templatej. This document will be knit to HTML to produce a webpage that will be hosted publicly via GitHub.
 
 ## Website publication work flow
 
@@ -52,7 +52,6 @@ knitr::include_app("https://michaelp.shinyapps.io/networkGraph/",
                    height = "800px")
 ```
 
-
 # Formatting
 
 ## Clusters {.tabset}
@@ -67,7 +66,6 @@ knitr::include_graphics("img/img-1.png")
 
 ### Goals Conceded v.s Percentage Wins
 
-
 ```{r, fig.cap='"2"', out.width="80%", fig.align="center"}
 knitr::include_graphics("img/img-2.png")
 ```
@@ -77,86 +75,6 @@ knitr::include_graphics("img/img-2.png")
 ```{r, fig.cap='"3"', out.width="80%", fig.align="center"}
 knitr::include_graphics("img/img-3.png")
 ```
-
-## Column formatting
-
-<!-- Begin columns environment -->
-
-::: {style="display: flex; font-size: large;"}
-<!-- Create a column -->
-
-<div>
-
-### Content Column 1
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel ipsum eu sem facilisis porttitor. Integer eu tristique lectus. Vestibulum nisi risus, porta sit amet cursus nec, auctor ac tellus. Integer egestas viverra rhoncus. Fusce id sem non ante vestibulum posuere ac sed lorem. Proin id felis a mi pellentesque viverra in at nulla. Duis augue nulla, aliquet ac ligula a, sagittis varius lorem.
-
-</div>
-
-<!-- Create another column (this one is just adding horizontal space to separate content) -->
-
-<div>
-
-::: {.horizontalgap style="width:60px"}
-:::
-
-</div>
-
-<!-- Create another column -->
-
-<div>
-
-### Content Column 2
-
-Aliquam non ante et erat luctus hendrerit eu ac justo. Fusce lacinia pulvinar neque non laoreet. Fusce vitae mauris pharetra, scelerisque purus eget, pharetra nisl. Aenean volutpat elementum tortor vitae rhoncus. Phasellus nec tellus euismod neque congue imperdiet tincidunt in mauris. Morbi eu lorem molestie, hendrerit lorem nec, semper massa. Sed vulputate hendrerit ex, eget cursus purus. Pellentesque consequat erat leo, eleifend porttitor lacus porta at. Vivamus faucibus quam ipsum, id condimentum ligula malesuada ultrices. Nullam luctus leo elit, vitae rutrum nibh venenatis eget. Nam at sodales purus. Proin nulla tellus, lacinia eget pretium sed, vehicula aliquet neque. Morbi vel eros elementum, suscipit elit eu, consequat libero. Nulla nec aliquet neque. Nunc bibendum sapien lectus, sed elementum nisi rutrum non. Ut vulputate at lacus eget maximus.
-
-```{r, out.width="80%", fig.align="right"}
-mtcars %>% 
-  ggplot(aes(x = wt, y = mpg)) +
-  geom_point()
-```
-
-</div>
-:::
-
-<!-- End columns environment with matching length indicator-->
-
-# Customizing your blog design
-
-As a *final* detail **only** if you have time, you can explore options for customizing the style of your blog. By default, we are using the `readthedown` theme from the [**rmdformats** package](https://github.com/juba/rmdformats) (see Line 6 of this file if you want to switch out themes).
-
-## Theme
-
-You can use the [**rmdformats** package](https://github.com/juba/rmdformats) to play around with some pre-built themes. There are, I'm sure, many many many more similar packages with built in themes, or you can look into how to include a CSS code chunk to customize aspects of a theme.
-
-Using the **rmdformats** package, you can change the theme itself (Line 6):
-
--   `rmdformats::readthedown`
--   `rmdformats::downcute`
-    -   For `downcute` only, you can add a new indented line below Line 6 with the code `downcute_theme: "chaos"` for the `downcute chaos` theme
--   `rmdformats::robobook`
--   `rmdformats::material`
-
-You can explore additional YAML options by looking at the [**rmdformats** package](https://github.com/juba/rmdformats) page or running, for example, `?rmdformats::readthedown()` to see the help documentation for a particular theme from the package.
-
-## Synax highlighting
-
-You can also change the code chunk syntax highlighting option (Line 7, `highlight`):
-
--   `"default"`
--   `"tango"`
--   `"pygments"`
--   `"kate"`
--   `"monochrome"`
--   `"espresso"`
--   `"zenburn"`
--   `"haddock"`
--   `"textmate"`
--   `NULL` for no syntax highlighting (not recommended)
-
-## Font size, type, and other customization
-
-Further customization requires adding a CSS style file or code chunk or incorporating other development options. Customization beyond the **rmdformats** package should be your lowest and final priority for the project. Ensure your content is fully prepared first.
 
 # References
 
